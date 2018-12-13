@@ -30,6 +30,8 @@ $(document).on("click", "p", function() {
       $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
       // A button to submit a new note, with the id of the article saved to it
       $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+      // A button to delete an old note, with the id of the article saved to it
+      $("#notes").append("<button data-id='" + data._id + "' id='deletenote'>Delete Note</button>");
 
       // If there's a note in the article
       if (data.note) {
@@ -57,15 +59,82 @@ $(document).on("click", "#savenote", function() {
       body: $("#bodyinput").val()
     }
   })
-    // With that done
-    .then(function(data) {
-      // Log the response
-      console.log(data);
-      // Empty the notes section
-      $("#notes").empty();
-    });
+  // With that done
+  .then(function(data) {
+    // Log the response
+    console.log(data);
+    // Empty the notes section
+    $("#notes").empty();
+  });
 
   // Also, remove the values entered in the input and textarea for note entry
   $("#titleinput").val("");
   $("#bodyinput").val("");
 });
+
+
+// When you click the savenote button
+$(document).on("click", "#deletenote", function() {
+  console.log("delete button works");
+  // Grab the id associated with the article from the submit button
+  let thisId = $(this).attr("data-id");
+  console.log(thisId);
+
+  // Run a DELETE request to remove the note, using what's entered in the inputs
+  $.ajax({
+    method: "DELETE",
+    url: "/articles/" + thisId,
+    data: {
+      success : function( data) {
+        console.log("success");
+      },
+      error : function() {
+        console.log("error");
+      }
+    }
+  })
+  // With that done
+  .then(function(data) {
+    // Log the response
+    console.log(data);
+    // Empty the notes section
+    $("#notes").empty();
+  });
+
+    // $('#js-games').on('click', '.delete', function(event) {
+    //     event.preventDefault();
+    //     console.log('delete button works')
+        // var id = $(this).parent().data('id');
+        // console.log(id);
+    // $.ajax({
+    //     type: 'DELETE',
+    //     dataType: 'json',
+    //     contentType: 'application/json; charset=utf-8',
+    //     url: '/favorites' + '/' + id,
+    //     success: getYourGames(),
+    // })
+    //     var gone = 'Your time was deleted!';
+    //     $('.js-type-game').html(gone);
+    //     setTimeout(function() {
+    //         $('.js-type-game').fadeOut(gone).html('').fadeIn();
+    //         }, 2000);
+    // })
+
+
+
+  // $.ajax({
+  //   method:'DELETE',
+  //   url:'/tasks/' + $("#link").attr('data-mongo-id'),
+  //     success : function( data) {
+  //       console.log('success);
+  //    },
+  //   error : function() {
+  //     console.log('error');
+  //   }
+  // })
+
+  // Also, remove the values entered in the input and textarea for note entry
+  $("#titleinput").val("");
+  $("#bodyinput").val("");
+});
+

@@ -135,6 +135,30 @@ app.post("/articles/:id", function(req, res) {
     });
 });
 
+// Route for deleting an Article's associated Note
+app.delete("/articles/:id", function (req, res) {
+  // your mongose deletes query
+  task.findByIdAndRemove(req.params.id, function (err, task) { 
+    console.log("Deleting"); 
+    let response = {
+      message: "task successfully deleted",
+      id: req.id
+  };
+  res.send(response);
+
+  res.status(204).end();
+
+  }); 
+})
+
+
+// router.delete('/gameName', (req, res) => {
+//   favorite.delete(req.params.gameName);
+//   console.log(`Deleting game \`${req.params.gameName}\``);
+//   res.status(204).end();
+//   });
+
+
 // Start the server
 app.listen(PORT, function() {
   console.log("App running on port " + PORT + "!");
