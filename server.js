@@ -34,7 +34,7 @@ app.use(express.static("public"));
         app.set("view engine", "handlebars");
 
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/unit18Populater";
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraper3";
 
 // Connect to the Mongo DB
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
@@ -42,28 +42,35 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 // ROUTES
 
 // A GET route for scraping the echoJS website
-app.get("/scrape", function(req, res) {
+// app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with axios
-  axios.get("http://www.echojs.com/").then(function(response) {
+  axios.get("http://www.theforce.net/").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
 
     // Now, we grab every h2 within an article tag, and do the following:
-    $("article h2").each(function(i, element) {
+    $(".w3-container").each(function(i, element) {
       // Save an empty result object
       var result = {};
 
       // Add the text and href of every link, and save them as properties of the result object
       result.title = $(this)
+        .children("b")
         .children("a")
         .text();
-      result.link = $(this)
+      result.summary = $(this)
+        .children("p")
+        .text();
+      result.link = "http://www.theforce.net" + $(this)
+        .children("b")
         .children("a")
         .attr("href");
+ 
 
       // Create a new Article using the `result` object built from scraping
-      db.Article.create(result)
-        .then(function(dbArticle) {
+      db.Article.create(result, 
+         //{unique:true}
+        ).then(function(dbArticle) {
           // View the added result in the console
           console.log(dbArticle);
         })
@@ -74,9 +81,9 @@ app.get("/scrape", function(req, res) {
     });
 
     // If we were able to successfully scrape and save an Article, send a message to the client
-    res.send("Scrape Complete");
+    // res.send("Scrape Complete");
   });
-});
+// });
 
 // Route for getting all Articles from the db
 app.get("/articles", function(req, res) {
