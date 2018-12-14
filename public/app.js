@@ -31,7 +31,7 @@ $(document).on("click", "p", function() {
       // A button to submit a new note, with the id of the article saved to it
       $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
       // A button to delete an old note, with the id of the article saved to it
-      $("#notes").append("<button data-id='" + data._id + "' id='deletenote'>Delete Note</button>");
+      $("#notes").append("<button data-id='" + (data && data.note ? data.note._id :'' )+ "' id='deletenote'>Delete Note</button>");
 
       // If there's a note in the article
       if (data.note) {

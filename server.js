@@ -49,6 +49,7 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
     var $ = cheerio.load(response.data);
 
     // Now, we grab every h2 within an article tag, and do the following:
+    var results = [];
     $(".w3-container").each(function(i, element) {
       // Save an empty result object
       var result = {};
@@ -65,20 +66,20 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
         .children("b")
         .children("a")
         .attr("href");
- 
+
+      results.push(result)
+    });
 
       // Create a new Article using the `result` object built from scraping
-      db.Article.create(result, 
-         //{unique:true}
-        ).then(function(dbArticle) {
+      db.Article.create(results).then(function(dbArticle) {
           // View the added result in the console
           console.log(dbArticle);
         })
         .catch(function(err) {
           // If an error occurred, send it to the client
-          return res.json(err);
+          // return res.json(err);
+          console.log("error thingy")
         });
-    });
 
     // If we were able to successfully scrape and save an Article, send a message to the client
     // res.send("Scrape Complete");
@@ -138,15 +139,13 @@ app.post("/articles/:id", function(req, res) {
 // Route for deleting an Article's associated Note
 app.delete("/articles/:id", function (req, res) {
   // your mongose deletes query
-  task.findByIdAndRemove(req.params.id, function (err, task) { 
+  db.Note.findByIdAndRemove(req.params.id, function (err, task) { 
     console.log("Deleting"); 
     let response = {
       message: "task successfully deleted",
       id: req.id
-  };
+    };
   res.send(response);
-
-  res.status(204).end();
 
   }); 
 })
