@@ -1,21 +1,21 @@
-var express = require("express");
-var logger = require("morgan");
-var mongoose = require("mongoose");
+let express = require("express");
+let logger = require("morgan");
+let mongoose = require("mongoose");
 
 // Our scraping tools
 // Axios is a promised-based http library, similar to jQuery's Ajax method
 // It works on the client and on the server
-var axios = require("axios");
-var cheerio = require("cheerio");
+let axios = require("axios");
+let cheerio = require("cheerio");
 
 // Require all models
-var db = require("./models");
+let db = require("./models");
 
 // Sets an initial port. We"ll use this later in our listener
 let PORT = process.env.PORT || 3000;
 
 // Initialize Express
-var app = express();
+let app = express();
 
 // Configure middleware
 
@@ -35,7 +35,7 @@ app.use(express.static("public"));
         app.set("view engine", "handlebars");
 
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraper3";
+let MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraper3";
 
 // Connect to the Mongo DB
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
@@ -47,13 +47,13 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
   // First, we grab the body of the html with axios
   axios.get("http://www.theforce.net/").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
-    var $ = cheerio.load(response.data);
+    let $ = cheerio.load(response.data);
 
     // Now, we grab every h2 within an article tag, and do the following:
-    var results = [];
+    let results = [];
     $(".w3-container").each(function(i, element) {
       // Save an empty result object
-      var result = {};
+      let result = {};
 
       // Add the text and href of every link, and save them as properties of the result object
       result.title = $(this)
@@ -150,14 +150,6 @@ app.delete("/articles/:id", function (req, res) {
 
   }); 
 })
-
-
-// router.delete('/gameName', (req, res) => {
-//   favorite.delete(req.params.gameName);
-//   console.log(`Deleting game \`${req.params.gameName}\``);
-//   res.status(204).end();
-//   });
-
 
 // Start the server
 app.listen(PORT, function() {

@@ -1,9 +1,10 @@
 // Grab the articles as a json
 $.getJSON("/articles", function(data) {
   // For each one
-  for (var i = 0; i < data.length; i++) {
+  loops = data.length -1;
+  for (let i = loops; i >= 0; i--) {
     // Display the apropos information on the page
-    $("#articles").append("<p data-id='" + data[i]._id + "'>" + "<strong>" + data[i].title + "</strong>" + "<br />" + data[i].summary + "<br /><a href='" + data[i].link + "'>LINK</a></p>");
+    $("#articles").append("<p data-id='" + data[i]._id + "'>" + "<strong>" + data[i].title + "</strong>" + "<br />" + data[i].summary + "<br /><a href='" + data[i].link + "'target=blank>LINK</a></p>");
   }
 });
 
@@ -100,38 +101,6 @@ $(document).on("click", "#deletenote", function() {
     // Empty the notes section
     $("#notes").empty();
   });
-
-    // $('#js-games').on('click', '.delete', function(event) {
-    //     event.preventDefault();
-    //     console.log('delete button works')
-        // var id = $(this).parent().data('id');
-        // console.log(id);
-    // $.ajax({
-    //     type: 'DELETE',
-    //     dataType: 'json',
-    //     contentType: 'application/json; charset=utf-8',
-    //     url: '/favorites' + '/' + id,
-    //     success: getYourGames(),
-    // })
-    //     var gone = 'Your time was deleted!';
-    //     $('.js-type-game').html(gone);
-    //     setTimeout(function() {
-    //         $('.js-type-game').fadeOut(gone).html('').fadeIn();
-    //         }, 2000);
-    // })
-
-
-
-  // $.ajax({
-  //   method:'DELETE',
-  //   url:'/tasks/' + $("#link").attr('data-mongo-id'),
-  //     success : function( data) {
-  //       console.log('success);
-  //    },
-  //   error : function() {
-  //     console.log('error');
-  //   }
-  // })
 
   // Also, remove the values entered in the input and textarea for note entry
   $("#titleinput").val("");
