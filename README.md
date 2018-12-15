@@ -7,6 +7,6 @@ Each story in the database will be displayed on the app's page.  It will show th
 
 To use it one goes to the Heroku hosted site https://blooming-waters-28751.herokuapp.com/
 
-![alt text](readme_pics/screencap.jpg?raw=true "1st pic") 
+![alt text](public/images/screencap.jpg?raw=true "1st pic") 
 
 - William Brian Swift (creator and fan)
